@@ -16,24 +16,18 @@ const User = require("./models/User");
 
 app.use(express.json());
 app.post("/login", async (req, res) => {
-  console.log(req.body,"this is hte body")
   const { email, password } = req.body;
 
-  // console.log(email, password);
   try {
-    // const allUsers = await User.find();
-    // console.log('All users:', allUsers);
     const user = await User.findOne({ email: email });
-    console.log(user, "user exists")
-    
 
     if (!user) {
       return res.status(401).json({ success: false, message: "No Record" });
     }
-    if (password !== password) {
+
+    if (password !== user.password) {
       return res.status(401).json({ success: false, message: "The Password is Incorrect" });
     }
-    console.log(user, "this is hte user")
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
@@ -43,6 +37,7 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
 
 app.get("/events/quizquest/quizdashboard/", verifyToken, (req, res) => {
   const userId = req.userId;
@@ -68,7 +63,6 @@ function verifyToken(req, res, next) {
     }
   }
 }
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running ${PORT} `);
