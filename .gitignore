@@ -1,4 +1,32 @@
-node_moduless
+# Dependency directories
+node_modules/
+
+# Environment variables file
 .env
-k
+
+# Editor specific files
+.vscode/
+.idea/
+
+# Log files
+*.log
+
+# Package lock files
 package-lock.json
+yarn.lock
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+
+# Ignore build output
+/build/
+
+# Ignore coverage output
+/coverage/
+
+# Ignore compiled output
+/dist/
+
+# Ignore npm debug log
+npm-debug.log*
