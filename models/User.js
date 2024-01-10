@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-}, { collection: 'participants' });
+}, { collection: 'participants'});
 
 const User = mongoose.model("User", userSchema);
 

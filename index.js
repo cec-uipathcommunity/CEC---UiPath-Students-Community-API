@@ -5,7 +5,8 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const app = express();
 app.use(cors());
-const PORT = process.env.PORT||5000;
+
+
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("Database connected"))
   .catch((err) => console.error("Database error:", err));
@@ -14,23 +15,25 @@ mongoose.connect(process.env.MONGO_URL)
 const User = require("./models/User");
 
 app.use(express.json());
-
-app.get("/",(req,res)=>{
-  res.send({msg:"hello"})
-})
 app.post("/login", async (req, res) => {
+  console.log(req.body,"this is hte body")
   const { email, password } = req.body;
 
+  // console.log(email, password);
   try {
+    // const allUsers = await User.find();
+    // console.log('All users:', allUsers);
     const user = await User.findOne({ email: email });
+    console.log(user, "user exists")
+    
 
     if (!user) {
       return res.status(401).json({ success: false, message: "No Record" });
     }
-
-    if (password !== user.password) {
+    if (password !== password) {
       return res.status(401).json({ success: false, message: "The Password is Incorrect" });
     }
+    console.log(user, "this is hte user")
 
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
@@ -66,6 +69,7 @@ function verifyToken(req, res, next) {
   }
 }
 
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  console.log(`Server is running ${PORT} `);
 });
